@@ -1,0 +1,6 @@
+.vscode
+node_modules
+src
+working_dir
+test.h5p
+outputfile.h5p

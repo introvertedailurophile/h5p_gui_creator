@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "newspaper-order": true,
+    "no-console": false,
+    "prefer-const": false,
+    "no-string-literal": { 
+      "severity": "warn"
+    },
+    "array-type": false
+  }
+}
