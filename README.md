@@ -4,7 +4,7 @@ This is a desktop app that allows you to mass create H5P content from input file
 
 ## Acknowledgements
 The code from <a href="https://github.com/sr258/h5p-cli-creator">h5p-cli-creator</a> repository was referenced for this app.
-Functionality for Memory Game was added from <a href="https://github.com/winry-brain/h5p-cli-creator">this</a> branch of the above repository.
+Functionality for Memory Game was added from <a href="https://github.com/winry-brain/h5p-cli-creator">this</a> fork of the above repository.
 
 ## Coding conventions
 All classes that exist in the actual H5P libraries or content types start with `H5p`, e.g. `H5pImage`. All classes that are part of the creator and don't exist in external libraries or content types don't start with this prefix.
