@@ -2,6 +2,7 @@ const {
   runFindTheWords,
   runDialogcards,
   runFlashcards,
+  runMemoryGame,
 } = require("./dist/run_content_module.js");
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
@@ -16,9 +17,6 @@ function createWindow() {
     height: 480,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      // contextIsolation: true, // must be set to true when contextBridge is enabled
-      // nodeIntegrationInWorker: true, // must be set to true when contextBridge is enabled
-      // preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY, // preload script enable contextBridge
     },
   });
   mainWindow.loadURL(`file://${__dirname}/index.html`);
@@ -64,6 +62,23 @@ function handleSubmission() {
         encoding: "utf-8",
         title: title,
         description: description,
+      });
+      dialog.showMessageBox(null, options);
+    } else if (content_type == "flashcards") {
+      runFlashcards({
+        csvfile: filepath + ".csv",
+        outputfile: filepath + ".h5p",
+        encoding: "utf-8",
+        title: title,
+        description: description,
+      });
+      dialog.showMessageBox(null, options);
+    } else if (content_type == "memorygame") {
+      runMemoryGame({
+        csvfile: filepath + ".csv",
+        outputfile: filepath + ".h5p",
+        encoding: "utf-8",
+        title: title,
       });
       dialog.showMessageBox(null, options);
     } else {

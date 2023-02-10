@@ -7,7 +7,7 @@ import { H5pPackage } from "./h5p-package";
 import { FindTheWordsCreator } from "./findthewords-creator";
 import { FlashcardsCreator } from './flashcards-creator';
 import { DialogCardsCreator } from "./dialogcards-creator";
-
+import { MemoryGameCreator } from "./memorygame-creator";
 
 async function runDialogcards(
    { csvfile, outputfile, title, encoding, delimiter, language, mode, description }: { csvfile: string; outputfile: string; title: string; encoding: BufferEncoding; delimiter: string; language: string; mode: "repetition" | "normal"; description: string; }): Promise<void> {
@@ -104,4 +104,32 @@ async function runFlashcards(
 
 }
 
-export { runFindTheWords, runDialogcards, runFlashcards };
+async function runMemoryGame(
+   { csvfile, outputfile, title, encoding, delimiter, language }: { csvfile: string; outputfile: string; title: string; encoding: BufferEncoding; delimiter: string; language: string; },
+): Promise<void> {
+   console.log("Creating module content type.");
+   csvfile = csvfile.trim();
+   outputfile = outputfile.trim();
+
+   let csv = fs.readFileSync(csvfile, { encoding });
+   let csvParsed = papa.parse(csv, {
+      header: true,
+      delimiter,
+      skipEmptyLines: true,
+   });
+   let h5pPackage = await H5pPackage.createFromHub(
+      "H5P.MemoryGame",
+      language
+   );
+   let creator = new MemoryGameCreator(
+      h5pPackage,
+      csvParsed.data as any,
+      path.dirname(csvfile),
+
+   );
+   await creator.create();
+   creator.setTitle(title);
+   creator.savePackage(outputfile);
+}
+
+export { runFindTheWords, runDialogcards, runFlashcards, runMemoryGame };
