@@ -1,6 +1,7 @@
 .vscode
 node_modules
-src
-working_dir
-test.h5p
-outputfile.h5p
+dist
+dialog1.h5p
+findTheWords.h5p
+flash1.h5p
+dragAndDrop.h5p

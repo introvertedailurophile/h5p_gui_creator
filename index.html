@@ -2,21 +2,33 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>App</title>
+    <title>CSV to H5P Creator</title>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <form>
+    <form id="form" action="/">
       <div>
-        <input type="text" name="title" />
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" />
       </div>
       <div>
-        <input type="text" name="description" />
+        <label for="description">Description:</label>
+        <input type="text" name="description" id="description" />
       </div>
       <div>
-        <input type="radio" name="content_type" />
+        <label for="content_type">Select the H5P content type :</label>
+        <select id="content_type" name="content_type">
+          <option value="dialogcards">Dialog Cards</option>
+          <option value="dialogcards">Flip Cards</option>
+          <option value="findthewords">Find The Words</option>
+        </select>
       </div>
-      <button type="submit">Submit</button>
+      <div>
+        <input type="file" accept=".csv" id="source" />
+      </div>
+      
+      <button type="submit" id="submit">Submit</button>
     </form>
-     <script src="./renderer.js"></script>
+    <script src="./renderer.js"></script>
   </body>
 </html>
