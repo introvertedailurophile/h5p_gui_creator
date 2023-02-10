@@ -26,7 +26,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-  mainWindow.webContents.openDevTools();
+//   mainWindow.webContents.openDevTools();
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.webContents.send("did-finish-load");
   });
