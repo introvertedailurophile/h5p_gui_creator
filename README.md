@@ -8,3 +8,10 @@ Functionality for Memory Game was added from <a href="https://github.com/winry-b
 
 ## Coding conventions
 All classes that exist in the actual H5P libraries or content types start with `H5p`, e.g. `H5pImage`. All classes that are part of the creator and don't exist in external libraries or content types don't start with this prefix.
+
+## Developers' steps
+Run `npm install` and `npm run build` to set up the project.
+`npm start` starts up the app
+
+For packaging, run `npx electron-packager . --platform=win32` to make a Windows application.
+Run `npx electron-packager . --platform=darwin` for MacOS applications
