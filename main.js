@@ -6,7 +6,7 @@ const {
 } = require("./dist/run_content_module.js");
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
-
+const fs = require("fs");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -26,7 +26,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-//   mainWindow.webContents.openDevTools();
+  //   mainWindow.webContents.openDevTools();
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.webContents.send("did-finish-load");
   });
@@ -34,54 +34,67 @@ function createWindow() {
 
 function handleSubmission() {
   ipcMain.on("did-submit-form", (event, argument) => {
+     event.preventDefault();
+     
+    // Receive arguments passed into form
     const { title, description, source, content_type } = argument;
-    const filepath = `./tests/${path.parse(source).name}`;
+    const filepath = `${__dirname}\\CSV\\${path.parse(source).name}.csv`;
+     const dir = `${__dirname}\\H5P`;
+     console.log(path.parse(source))
 
-    const options = {
+    // Check if H5P folder exists, make new folder
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+    const output_filepath = `${__dirname}\\H5P\\${path.parse(source).name}.h5p`;
+    const success_options = {
       type: "info",
       defaultId: 2,
       title: "Success!",
       message: "H5P files generated successfully!",
-      detail: "File saved in H5P Folder",
+      detail: `This is the file path ${output_filepath}`,
     };
 
-    if (content_type == "dialogcards") {
-      runDialogcards({
-        csvfile: filepath + ".csv",
-        outputfile: filepath + ".h5p",
-        encoding: "utf-8",
-        title: title,
-        description: description,
-        mode: "normal",
-      });
-      dialog.showMessageBox(null, options);
-    } else if (content_type == "findthewords") {
-      runFindTheWords({
-        csvfile: filepath + ".csv",
-        outputfile: filepath + ".h5p",
-        encoding: "utf-8",
-        title: title,
-        description: description,
-      });
-      dialog.showMessageBox(null, options);
-    } else if (content_type == "flashcards") {
-      runFlashcards({
-        csvfile: filepath + ".csv",
-        outputfile: filepath + ".h5p",
-        encoding: "utf-8",
-        title: title,
-        description: description,
-      });
-      dialog.showMessageBox(null, options);
-    } else if (content_type == "memorygame") {
-      runMemoryGame({
-        csvfile: filepath + ".csv",
-        outputfile: filepath + ".h5p",
-        encoding: "utf-8",
-        title: title,
-      });
-      dialog.showMessageBox(null, options);
-    } else {
+    try {
+      //  Check content type, run relevant function
+      if (content_type == "dialogcards") {
+        runDialogcards({
+          csvfile: filepath,
+          outputfile: output_filepath,
+          encoding: "utf-8",
+          title: title,
+          description: description,
+          mode: "normal",
+        });
+        dialog.showMessageBox(null, success_options);
+      } else if (content_type == "findthewords") {
+        runFindTheWords({
+          csvfile: filepath,
+          outputfile: output_filepath,
+          encoding: "utf-8",
+          title: title,
+          description: description,
+        });
+        dialog.showMessageBox(null, success_options);
+      } else if (content_type == "flashcards") {
+        runFlashcards({
+          csvfile: filepath,
+          outputfile: output_filepath,
+          encoding: "utf-8",
+          title: title,
+          description: description,
+        });
+        dialog.showMessageBox(null, success_options);
+      } else if (content_type == "memorygame") {
+        runMemoryGame({
+          csvfile: filepath,
+          outputfile: output_filepath,
+          encoding: "utf-8",
+          title: title,
+        });
+        dialog.showMessageBox(null, success_options);
+      }
+    } catch (error) {
       const options = {
         type: "info",
         defaultId: 2,
@@ -89,7 +102,7 @@ function handleSubmission() {
         message: "Content type not recognised",
       };
       dialog.showMessageBox(null, options);
-      console.log("Content type not recognised");
+      console.log(error);
     }
   });
 }
